@@ -15,5 +15,5 @@ def merge(old_list, new_list): #merge both lists and removing duplicates
 
 def write_list(file_path, file_list): #Write the given list on a file
     with open(file_path, "w") as f:
-        for url in file_list:
-            f.write(url + "\n")
+        for data in file_list:
+            f.write(data + "\n")

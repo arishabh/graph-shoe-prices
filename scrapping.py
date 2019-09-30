@@ -8,12 +8,15 @@ tries = 0
 base_url = "https://www.stockx.com"
 main_url = "https://www.stockx.com/sneakers/most-popular"
 
+header = ""
+
 def soup(url):
     tries = 0
     status = 0
     while((status != 200)  or (tries <= TOTAL_TRIES)): #Try with different headers 5 times
-        res = requests.get(base_url, headers=LoadHeader())
-        res = requests.get(url, headers=LoadHeader())
+        header = LoadHeader()
+        res = requests.get(base_url, headers=header)
+        res = requests.get(url, headers=header)
         status = res.status_code
         tries += 1
     
@@ -38,12 +41,15 @@ def scrapping_main():
         shoes_url[index] = base_url + shoes_url[index]
     return shoes_url
 
-def scrapping_shoe(shoe_url): #Need base, lowest ask and highest bid prices
+def scrapping_shoe(shoe_url): #Need base, lowest ask and highest bid prices, valatility and release date
     content = soup(shoe_url)
     
     shoe_name = content.title.string
 
     bids = content.findAll("div", {"class": "en-us stat-value stat-small"})
+    if (bids == []): 
+        print(header)
+        return None
     lowest_ask = bids[0].text
     highest_bid = bids[1].text
     
@@ -55,11 +61,13 @@ def scrapping_shoe(shoe_url): #Need base, lowest ask and highest bid prices
     base_price = content.findAll("span", {"class":"sneak-score"})[1].text[1:]
     spans=content.findAll("span")
     volatility = None
-    release_data = None
+    release_date = None
     for index in range(len(spans)):
         if (spans[index].text == "Release Date"):
-            release_date = spans[index+1].text
+            release_date = spans[index+1].text.strip(" ")
         if (spans[index].text == "Volatility"):
             volatility = spans[index+1].text
-
-    return shoe_name, base_price, lowest_ask, highest_bid, release_date, volatility
+    if ((volatility is None) or (release_date is None)): 
+        print(header)
+        return None 
+    return " ".join([shoe_name, base_price, lowest_ask, highest_bid, release_date, volatility])
