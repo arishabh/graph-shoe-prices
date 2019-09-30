@@ -1,4 +1,4 @@
-def readfile(file_path):
+def read_file(file_path):
     content=[]
     with open(file_path, "r") as f: #Open file
         for line in f:
@@ -12,3 +12,8 @@ def merge(old_list, new_list): #merge both lists and removing duplicates
         if(elem not in old_list):
             old_list.append(elem)
     return old_list
+
+def write_list(file_path, file_list): #Write the given list on a file
+    with open(file_path, "w") as f:
+        for url in file_list:
+            f.write(url + "\n")
