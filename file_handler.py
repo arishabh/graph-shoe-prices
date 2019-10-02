@@ -17,15 +17,16 @@ def write_list(file_path, file_list): #Write the given list on a file
     with open(file_path, "w") as f:
         for data in file_list:
             f.write(data + "\n")
+    return
 
 def merge_shoe_data(inp_list):
     data = []
     for line in inp_list:
         line = line.split(" ")
         name = " ".join(line[:-7])
-        lowest_ask_price = line[-6][1:]
+        lowest_ask_price = int(line[-6])
         lowest_ask_size = "Size: " + line[-5]
-        highest_bid_price = line[-4][1:]
+        highest_bid_price = int(line[-4])
         highest_bid_size = "Size: " + line[-3]
         volatility = "Volatility: " + line[-1]
         flag = False
@@ -39,10 +40,15 @@ def merge_shoe_data(inp_list):
                 flag = True
             if(flag): break
         if(not flag):
-            base_price = "Retail Price: " + line[-7][1:]
+            base_price = int(line[-7][1:])
             release_date = "Release Date: " + line[-2]
             data.append([[name, base_price, release_date, volatility], 
                 [lowest_ask_size, lowest_ask_price],
                 [highest_bid_size, highest_bid_price]])
     
     return data
+
+def empty_file(file_path):
+    with open(file_path, "w") as f:
+        f.write("")
+    return

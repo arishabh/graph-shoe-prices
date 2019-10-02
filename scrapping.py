@@ -58,15 +58,15 @@ def scrapping_shoe(shoe_url): #Need base, lowest ask and highest bid prices, val
 
     bids = content.findAll("div", {"class": "en-us stat-value stat-small"})
     if (bids == []): return None
-    lowest_ask = bids[0].text
-    highest_bid = bids[1].text
+    lowest_ask = bids[0].text[1:]
+    highest_bid = bids[1].text[1:]
     
     sizes = content.findAll("span", {"class": "bid-ask-sizes"})
     lowest_ask += " " + (sizes[0].text).split(" ")[1] #Adding the sizes
     highest_bid += " " + (sizes[1].text).split(" ")[1] 
     #print(lowest_ask + highest_bid)
 
-    base_price = content.findAll("span", {"class":"sneak-score"})[1].text[1:]
+    base_price = content.findAll("span", {"class":"sneak-score"})[1].text[2:]
     spans=content.findAll("span")
     volatility = None
     release_date = None
