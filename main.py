@@ -24,8 +24,10 @@ if __name__ == "__main__":
         shoes_data.append(data) if data != None else print("Got None\n") 
         end = time()
         print("URL " + str(all_shoe_urls.index(url)+1) + " took " + str(end-start) + "s")
-
-    write_list(shoes_data_path, shoes_data)
+    
+    old_data = read_file(shoes_data_path)
+    all_data = old_data + shoes_data
+    write_list(shoes_data_path, all_data)
     main_end = time()
     print("Total time taken: " + str((main_end-main_start)/60) + "min")
     print("Took about " + str((main_end-main_start)/(len(all_shoe_urls)+1)) + "s per scrapping")
