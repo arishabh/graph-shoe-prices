@@ -11,7 +11,10 @@ def merge(old_list, new_list): #merge both lists and removing duplicates
     for elem in new_list:
         if(elem not in old_list):
             old_list.append(elem)
-    return old_list
+        else:
+            old_list.remove(elem)
+            old_list.append(elem)
+    return old_list if (len(old_list) <= 50) else old_list[:50]
 
 def write_list(file_path, file_list): #Write the given list on a file
     with open(file_path, "w") as f:
@@ -19,15 +22,16 @@ def write_list(file_path, file_list): #Write the given list on a file
             f.write(data + "\n")
     return
 
-def merge_shoe_data(inp_list):
+def merge_shoes_data(inp_list):
     data = []
     for line in inp_list:
         line = line.split(" ")
         name = " ".join(line[:-7])
         lowest_ask_price = int(line[-6])
-        lowest_ask_size = "Size: " + line[-5]
+
+        lowest_ask_size = line[-5]
         highest_bid_price = int(line[-4])
-        highest_bid_size = "Size: " + line[-3]
+        highest_bid_size = line[-3]
         volatility = "Volatility: " + line[-1]
         flag = False
         for index in range(len(data)):
@@ -40,15 +44,17 @@ def merge_shoe_data(inp_list):
                 flag = True
             if(flag): break
         if(not flag):
-            base_price = int(line[-7][1:])
+            base_price = int(line[-7])
             release_date = "Release Date: " + line[-2]
             data.append([[name, base_price, release_date, volatility], 
                 [lowest_ask_size, lowest_ask_price],
                 [highest_bid_size, highest_bid_price]])
     
     return data
+#Ex output = [[['adidas shoe', '160', '10/4/2019', '28%'], ['5', 200, 205], ['10', 300, 330]],
+#              ['jordan shoe2', '150', '12/4/2019', '8%'], ['15', 240, 205], ['9', 250, 230]]]
 
-def empty_file(file_path):
+def clear_file(file_path):
     with open(file_path, "w") as f:
         f.write("")
     return
