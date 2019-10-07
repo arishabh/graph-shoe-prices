@@ -8,9 +8,11 @@ def plot_shoes(shoes_data, max_time, freq):
         #print(data)
         
         num_data = 7*freq*max_time
-
         lowest_ask = data[1][1:] if (len(data[1][1:])<num_data) else data[1][num_data*-1:]
         highest_bid =  data[2][1:] if (len(data[2][1:])<num_data) else data[2][num_data*-1:] 
+        
+        peak_price = max(data[2][1:])
+
         x_coef = 1/num_data
         x_axis = []
         for i in range(len(lowest_ask)):
@@ -38,7 +40,7 @@ def plot_shoes(shoes_data, max_time, freq):
         x_dist = 2*x_diff/100
         y_dist = y_diff/100
         y_pos_text = (y_bot+y_top)/2
-        x_pos_text = x_max + x_diff/8
+        x_pos_text = x_max + x_diff/5
         
         plt.text(x_axis[-1]-x_dist, (lowest_ask[-1]+y_dist), "$"+str(lowest_ask[-1]), fontsize=13)
         plt.text(x_axis[-1]-x_dist, (highest_bid[-1]+y_dist), "$"+str(highest_bid[-1]), fontsize=13)
@@ -50,8 +52,8 @@ def plot_shoes(shoes_data, max_time, freq):
             plt.text(x_axis[i]-x_dist, (highest_bid[i]+y_dist), "$"+str(highest_bid[i]), fontsize=13)
         """
         text = "Latest data:\n\n" + data[0][2] + "\nHighest Bid Price: $" + str(highest_bid[-1]) + " for Size: " + data[2][0] 
-        text += "\nLowest Ask Price: $" + str(lowest_ask[-1]) + " for Size: " + data[1][0] + "\n" + data[0][3] + "\nRetail Price: $" +str(data[0][1])
+        text += "\nLowest Ask Price: $" + str(lowest_ask[-1]) + " for Size: " + data[1][0] + "\n" + data[0][3] + "\nRetail Price: $" +str(data[0][1]) + "\nPeak Price: $" + str(peak_price)
         
         plt.text(x_pos_text, y_pos_text, text, fontsize=18)
         #plt.show()
-        plt.savefig(plot_saves+(data[0][0].replace("/", "|"))+".png", bbox_inches="tight")
+        plt.savefig(plot_saves+data[0][0]+".png", bbox_inches="tight")

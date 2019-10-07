@@ -7,26 +7,34 @@ def read_file(file_path):
             content.append(line)
     return content
 
-def merge(old_list, new_list): #merge both lists and removing duplicates
+def merge(old_list, new_list, max_urls): #merge both lists and removing duplicates
+    new_urls = []
     for elem in new_list:
         if(elem not in old_list):
             old_list.append(elem)
+            new_urls.append(elem)
         else:
             old_list.remove(elem)
             old_list.append(elem)
-    return old_list if (len(old_list) <= 50) else old_list[:50]
+    return old_list if (len(old_list) <= max_urls) else old_list[:max_urls]
 
-def write_list(file_path, file_list): #Write the given list on a file
+def write_file(file_path, file_list): #Write the given list on a file
     with open(file_path, "w") as f:
         for data in file_list:
             f.write(data + "\n")
     return
 
+def append_file(file_path, file_list):
+    with open(file_path, "a") as f:
+        for data in file_list:
+            f.write(data + "\n")
+
 def merge_shoes_data(inp_list):
     data = []
     for line in inp_list:
         line = line.split(" ")
-        name = " ".join(line[:-7])
+        name = " ".join(line[:-8])
+        shoe_url = line[-7]
         lowest_ask_price = int(line[-6])
 
         lowest_ask_size = line[-5]
@@ -46,13 +54,13 @@ def merge_shoes_data(inp_list):
         if(not flag):
             base_price = int(line[-7])
             release_date = "Release Date: " + line[-2]
-            data.append([[name, base_price, release_date, volatility], 
+            data.append([[name, base_price, release_date, volatility, shoe_url], 
                 [lowest_ask_size, lowest_ask_price],
                 [highest_bid_size, highest_bid_price]])
     
     return data
-#Ex output = [[['adidas shoe', '160', '10/4/2019', '28%'], ['5', 200, 205], ['10', 300, 330]],
-#              ['jordan shoe2', '150', '12/4/2019', '8%'], ['15', 240, 205], ['9', 250, 230]]]
+#Ex output = [[['adidas shoe', '160', '10/4/2019', '28%', 'www.stockx.com/adidas/shoe], ['5', 200, 205], ['10', 300, 330]],
+#              ['jordan shoe2', '150', '12/4/2019', '8%', 'www.stockx.com/jordan/shoe2'], ['15', 240, 205], ['9', 250, 230]]]
 
 def clear_file(file_path):
     with open(file_path, "w") as f:

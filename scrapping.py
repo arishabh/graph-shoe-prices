@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup as bs
 from RandomHeaders import *
+from urllib.request import urlretrieve
+from os.path import exists
 
 TOTAL_TRIES = 3
 tries = 0
@@ -54,7 +56,7 @@ def scrapping_main():
 def scrapping_shoe(shoe_url): #Need base, lowest ask and highest bid prices, valatility and release date
     content = soup(shoe_url)
     
-    shoe_name = content.title.string.split(" - ")[0]
+    shoe_name = content.title.string.split(" - ")[0].replace("/", "|")
 
     bids = content.findAll("div", {"class": "en-us stat-value stat-small"})
     if (bids == []): return None
@@ -81,4 +83,12 @@ def scrapping_shoe(shoe_url): #Need base, lowest ask and highest bid prices, val
         if (spans[index].text == "Volatility"):
             volatility = spans[index+1].text
     if ((volatility is None) or (release_date is None)): return None 
-    return " ".join([shoe_name, base_price, lowest_ask, highest_bid, release_date, volatility])
+    
+    images_path = "info/images/"+shoe_name+".jpg"
+    if(not exists(pic)):
+        save_shoe_photo(content, pic)
+    return " ".join([shoe_name, shoe_url, base_price, lowest_ask, highest_bid, release_date, volatility])
+
+def save_shoe_photo(soup, path):
+    img_url = soup.findAll("img", {"data-testid":"product-detail-image"})[0]['src']
+    urlretrieve(img_url, path) 
