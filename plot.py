@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import math
 
 plot_saves = "info/graphs/"
+plt.rcParams.update({'figure.max_open_warning': 0})
 
 def plot_shoes(shoes_data, max_time, freq):
     for data in shoes_data:

@@ -34,7 +34,7 @@ def merge_shoes_data(inp_list):
     for line in inp_list:
         line = line.split(" ")
         name = " ".join(line[:-8])
-        shoe_url = line[-7]
+        shoe_url = line[-8]
         lowest_ask_price = int(line[-6])
 
         lowest_ask_size = line[-5]

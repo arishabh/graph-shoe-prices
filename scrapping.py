@@ -57,7 +57,6 @@ def scrapping_shoe(shoe_url): #Need base, lowest ask and highest bid prices, val
     content = soup(shoe_url)
     
     shoe_name = content.title.string.split(" - ")[0].replace("/", "|")
-
     bids = content.findAll("div", {"class": "en-us stat-value stat-small"})
     if (bids == []): return None
     lowest_ask = bids[0].text[1:].replace(',','')
@@ -85,8 +84,8 @@ def scrapping_shoe(shoe_url): #Need base, lowest ask and highest bid prices, val
     if ((volatility is None) or (release_date is None)): return None 
     
     images_path = "info/images/"+shoe_name+".jpg"
-    if(not exists(pic)):
-        save_shoe_photo(content, pic)
+    if(not exists(images_path)):
+        save_shoe_photo(content, images_path)
     return " ".join([shoe_name, shoe_url, base_price, lowest_ask, highest_bid, release_date, volatility])
 
 def save_shoe_photo(soup, path):
